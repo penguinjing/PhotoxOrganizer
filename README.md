@@ -1,36 +1,27 @@
-# PhotoxOrganizer
+# PhotoxOrganizer 
+### 个人照片备份整理程序
 
-## 照片exif中读取拍摄日期
-采用模块读取字段 EXIF.Photo.DateTimeOriginal
+本程序帮助你自动根据拍摄的年月日将照片文件(.jpg)拷贝至一个统一的-年/-月/-日三级目录中备份归档, 让你有个全面的个人图片备份仓库。
 
-tags.get('EXIF DateTimeOriginal').values
+###### 三级目录结构示意
 
 ```
-import exifread
-
-filename = open(path_name, 'rb')
-tags =exifread.process_file(filename)  #  Return Exif tags as a dictionary
+-/...
+-/Year2010/...
+-/Year2011/...
+-/Year2012/...
+-/Year2013/01-Jan/...
+-/Year2013/02-Feb/...
+-/Year2013/03-Mar/...
+-/Year2014/05-May/20100501/...
+-/Year2014/05-May/20100502/...
+-/Year2014/05-May/20100510/20100510_img110.jpg
+                           20100510_img119.jpg
+                           20100510_img120.jpg
+                           20100510_img3456.jpg
+                           20100510_img345337.jpg
+                           ...
 ```
 
-类似字段 EXIF.Photo.DateTimeDigitized
-
-Reference: [Standard Exif Tags from Metadata reference tables](http://www.exiv2.org/tags.html) at www.exiv2.org
-
-
-## 有用的函数
-import os
-os.path.join()
-os.getcwd()
-os.chdir()
-os.makedirs()
-os.path.abspath(path)
-os.path.isabs(path)
-os.pathrelpath(path, start)
-os.path.dirname(path)
-os.path.basename(path)
-os.path.sep() => / (POSIX) or \\ (Windows)
-
-os.path.exists(path)
-os.mkdir()
-
-from PIL.ExifTags import TAGS
+### 用法
+`$python main.py 'original dir' 'target dir'`
