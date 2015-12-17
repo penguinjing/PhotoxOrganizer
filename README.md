@@ -26,7 +26,7 @@
 ### Python包依赖关系
 
 本程序依赖Python中exif-py包。请参考下面安装exif-py包
-`$pip install exif.py`
+`$pip install exifread`
 
 ### 用法
 `$python main.py 'original dir' 'target dir'`
