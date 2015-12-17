@@ -35,7 +35,6 @@ def copy_image_file(FullFileName, TargetDir, ShotDate):
     targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
     shutil.copy(FullFileName, targetFullFileName)
 
-
 def get_all_jpg(path):
     alljpgfilelist = []
     for folderName, subfolders, filenames in os.walk(path):
@@ -44,11 +43,19 @@ def get_all_jpg(path):
                 alljpgfilelist.append(filename)
     return alljpgfilelist
 
+def print_prompt():
+    print '\n  ----  PhotoxOrganizer  ----  '
+    print 'Automatic sort & backup photos by shotting date\n'
+    print "$python main.py <original dir> <target dir>"
+
 # 自检区
 if __name__ == '__main__':
-    selfname, sourcedir, targetdir = argv
+    if len(argv) in [1, 2]:
+        print_prompt()
+
     if len(argv) == 3 and os.path.exists(sourcedir)\
     and os.path.exists(targetdir):
+        selfname, sourcedir, targetdir = argv
         for jpgfile in get_all_jpg(sourcedir):
             image_date = get_exif_date(jpgfile)
             create_target_dir(targetdir, ShotDate = image_date)
