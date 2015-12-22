@@ -44,9 +44,18 @@ def get_all_jpg(path):
     return alljpgfilelist
 
 def print_prompt():
-    print '\n  ----  PhotoxOrganizer  ----  '
-    print 'Automatic sort & backup photos by shotting date\n'
-    print "$python main.py <original dir> <target dir>"
+    print "  ____   _             _                                     "
+    print " |  _ \ | |__    ___  | |_  ___                              "
+    print " | |_) || '_ \  / _ \ | __|/ _ \                             "
+    print " |  __/ | | | || (_) || |_| (_) |                            "
+    print " |_|    |_|_|_| \___/  \__|\___/           _                 "
+    print "  __  __  / _ \  _ __  __ _   __ _  _ __  (_) ____ ___  _ __ "
+    print "  \ \/ / | | | || '__|/ _` | / _` || '_ \ | ||_  // _ \| '__|"
+    print "   >  <  | |_| || |  | (_| || (_| || | | || | / /|  __/| |   "
+    print "  /_/\_\  \___/ |_|   \__, | \__,_||_| |_||_|/___|\___||_|   "
+    print "                      |___/                                  "
+    print '\nAutomatic sort photos by shotting date and backup it.\n'
+    print "usage: python main.py <original dir> <target dir>"
 
 # 自检区
 if __name__ == '__main__':
