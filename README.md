@@ -1,7 +1,8 @@
 # PhotoxOrganizer 
 ### 个人照片备份整理程序
 
-本程序帮助你自动根据拍摄的年月日将照片文件(.jpg)拷贝至一个统一的-年/-月/-日三级目录中备份归档, 让你有个全面的个人图片备份仓库。
+本程序帮助你自动根据拍摄的年月日将照片文件(.jpg)拷贝至一个指定目录下的-年/-月/-日三级目录中备份归档, 让你有个全面完整的个人图片备份仓库。  
+原图片文件并不会删除。
 
 ###### 三级目录结构示意
 
@@ -23,10 +24,21 @@
                            ...
 ```
 
+### 用法
+
+`$python main.py <original dir> <target dir>`
+
+> 参数目录说明  
+> `<orginal dir>` - 图片所在的源目录(包括其所在的子目录)  
+> `<target dir>`  - 图片汇总备份至目标目录
+
+
+### 安装
+1. 安装 [Python 2.7.11](https://www.python.org/downloads/release/python-2711/) 运行环境 - 选择对应你机器操作系统的版本下载安装
+2. 下载 [本仓库](https://github.com/penguinjing/PhotoxOrganizer) 中main.py程序 - 在文件上点击右键另存到本地
+3. 安装下面Python包依赖关系
+
 ### Python包依赖关系
 
-本程序依赖Python中exif-py包。请参考下面安装exif-py包
+本程序须依赖Python中exif-py包。请参考下面安装exif-py包  
 `$pip install exifread`
-
-### 用法
-`$python main.py 'original dir' 'target dir'`
