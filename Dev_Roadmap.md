@@ -10,6 +10,18 @@
 - [X] 实现按3个字符串'年''月''日'来建立目录
 - [X] 拷贝文件至指定字符串'年''月''日'组合成的字符串路径中, 改文件名为拍摄日期前缀'20100510_'+ 原图片名
 
+#### version 0.4 by penguin
+- [ ] 循环检索指定的目录下所有图片文件(.jpg)制造个路径文件名列表
+
+#### 测试
+
+- [ ] 测试两个命令行的参数传递进来的必须是路径
+- [ ] 测试传递绝对路径参数是否ok
+- [ ] 测试转递相对路径参数是否ok
+- [ ] 测试.jpg无拍摄日期字段的情况
+- [ ] 测试拍摄日期字段已建立的情况
+- [ ] 测试如果在目标位置已有同名文件，弹出提示，由客户修改新文件名进行备份
+
 ## Reference:
 
 #### 照片exif中读取拍摄日期
@@ -23,9 +35,6 @@ import exifread
 filename = open(path_name, 'rb')
 tags =exifread.process_file(filename, details=False)  #  Return Exif tags as a dictionary
 ```
-
-#### version 0.4 by penguin
-- [ ] 循环检索指定的目录下所有图片文件(.jpg)制造个路径文件名列表
 
 类似字段 EXIF.Photo.DateTimeDigitized
 

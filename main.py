@@ -4,7 +4,7 @@
 文件说明：根据图片拍摄日期建立(-年/-月/-日)三级目录(备份资料库)，将文件相应
 拷贝至相应日期目录中，并将图片文件名改为拍摄日期(20151210)+原图片名
 作者信息：penguinjing & lixiguangzhou
-版本自述: 0.4.0
+版本自述: 0.4.1
 '''
 # 全局引用
 import os
@@ -16,6 +16,28 @@ from sys import argv
 #PATH = "/path/2/work dir"
 
 # 函式撰写区
+def print_prompt():
+    print "  ____   _             _                                     "
+    print " |  _ \ | |__    ___  | |_  ___                              "
+    print " | |_) || '_ \  / _ \ | __|/ _ \                             "
+    print " |  __/ | | | || (_) || |_| (_) |                            "
+    print " |_|    |_|_|_| \___/  \__|\___/           _                 "
+    print "  __  __  / _ \  _ __  __ _   __ _  _ __  (_) ____ ___  _ __ "
+    print "  \ \/ / | | | || '__|/ _` | / _` || '_ \ | ||_  // _ \| '__|"
+    print "   >  <  | |_| || |  | (_| || (_| || | | || | / /|  __/| |   "
+    print "  /_/\_\  \___/ |_|   \__, | \__,_||_| |_||_|/___|\___||_|   "
+    print "                      |___/                                  "
+    print '\nAutomatic sort photos by shotting date and backup it.\n'
+    print "usage: python main.py <original dir> <target dir>"
+
+def get_all_jpg(path):
+    alljpgfilelist = []
+    for folderName, subfolders, filenames in os.walk(path):
+        for filename in filenames:
+            if filename[-4:] == '.jpg':
+                alljpgfilelist.append(filename)
+    return alljpgfilelist
+
 def get_exif_date(FileName):
     tags = {}
     with open(FileName, 'rb') as f:
@@ -34,28 +56,6 @@ def copy_image_file(FullFileName, TargetDir, ShotDate):
     newFileName = year + month + day + '_' + os.path.basename(FullFileName)
     targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
     shutil.copy(FullFileName, targetFullFileName)
-
-def get_all_jpg(path):
-    alljpgfilelist = []
-    for folderName, subfolders, filenames in os.walk(path):
-        for filename in filenames:
-            if filename[-4:] == '.jpg':
-                alljpgfilelist.append(filename)
-    return alljpgfilelist
-
-def print_prompt():
-    print "  ____   _             _                                     "
-    print " |  _ \ | |__    ___  | |_  ___                              "
-    print " | |_) || '_ \  / _ \ | __|/ _ \                             "
-    print " |  __/ | | | || (_) || |_| (_) |                            "
-    print " |_|    |_|_|_| \___/  \__|\___/           _                 "
-    print "  __  __  / _ \  _ __  __ _   __ _  _ __  (_) ____ ___  _ __ "
-    print "  \ \/ / | | | || '__|/ _` | / _` || '_ \ | ||_  // _ \| '__|"
-    print "   >  <  | |_| || |  | (_| || (_| || | | || | / /|  __/| |   "
-    print "  /_/\_\  \___/ |_|   \__, | \__,_||_| |_||_|/___|\___||_|   "
-    print "                      |___/                                  "
-    print '\nAutomatic sort photos by shotting date and backup it.\n'
-    print "usage: python main.py <original dir> <target dir>"
 
 # 自检区
 if __name__ == '__main__':
