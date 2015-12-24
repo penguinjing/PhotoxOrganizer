@@ -34,38 +34,54 @@ def get_all_jpg(path):
     alljpgfilelist = []
     for folderName, subfolders, filenames in os.walk(path):
         for filename in filenames:
-            if filename[-4:] == '.jpg':
-                alljpgfilelist.append(filename)
+            if filename[-4:].lower() == '.jpg':
+                jpgfilename = os.path.join(folderName, filename)
+                alljpgfilelist.append(jpgfilename)
     return alljpgfilelist
 
 def get_exif_date(FileName):
     tags = {}
     with open(FileName, 'rb') as f:
-        tags =exifread.process_file(f, details=False)  #  Return Exif tags as a dictionary
-    shotDateTime = tags.get('EXIF DateTimeOriginal').values
-    shotDate = shotDateTime[:10].split(':')
+        tags = exifread.process_file(f, details=False)  #  Return Exif tags as a dictionary
+    if 'EXIF DateTimeOriginal' in tags:
+        shotDateTime = tags.get('EXIF DateTimeOriginal').values
+        shotDate = shotDateTime[:10].split(':')
+    else:
+        shotDate = 'unknown'
     return shotDate
 
 def create_target_dir(TargetDir, ShotDate):
-    year, month, day = ShotDate
-    targetDirJoin = os.path.join(TargetDir, year, month, day)
-    os.makedirs(targetDirJoin)
+    if ShotDate == 'unknown':
+        targetDirJoin = os.path.join(TargetDir, ShotDate)
+    else:    
+        year, month, day = ShotDate
+        targetDirJoin = os.path.join(TargetDir, year, month, day)
+    if os.path.exists(targetDirJoin):
+        return
+    else:
+        os.makedirs(targetDirJoin)
 
 def copy_image_file(FullFileName, TargetDir, ShotDate):
-    year, month, day = ShotDate
-    newFileName = year + month + day + '_' + os.path.basename(FullFileName)
-    targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
+    if ShotDate == 'unknown':
+        newFileName = os.path.basename(FullFileName)
+        targetFullFileName = os.path.join(TargetDir, ShotDate, newFileName)
+    else: 
+        year, month, day = ShotDate
+        newFileName = year + month + day + '_' + os.path.basename(FullFileName)
+        targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
     shutil.copy(FullFileName, targetFullFileName)
 
 # 自检区
 if __name__ == '__main__':
-    if len(argv) in [1, 2]:
+    if len(argv) in [1, 2] or len(argv) > 3:
         print_prompt()
-
-    if len(argv) == 3 and os.path.exists(sourcedir)\
-    and os.path.exists(targetdir):
+    if len(argv) == 3:
         selfname, sourcedir, targetdir = argv
-        for jpgfile in get_all_jpg(sourcedir):
-            image_date = get_exif_date(jpgfile)
-            create_target_dir(targetdir, ShotDate = image_date)
-            copy_image_file(jpgfile, targetdir, ShotDate = image_date)
+        if os.path.exists(sourcedir) and os.path.exists(targetdir):
+            for jpgfile in get_all_jpg(sourcedir):
+                print 'processing files' ,jpgfile 
+                image_date = get_exif_date(jpgfile)
+                create_target_dir(targetdir, ShotDate = image_date)
+                copy_image_file(jpgfile, targetdir, ShotDate = image_date)
+        else:
+            print_prompt
