@@ -69,7 +69,7 @@ def copy_image_file(FullFileName, TargetDir, ShotDate):
         year, month, day = ShotDate
         newFileName = year + month + day + '_' + os.path.basename(FullFileName)
         targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
-    shutil.copy(FullFileName, targetFullFileName)
+    shutil.copy2(FullFileName, targetFullFileName)
 
 # 自检区
 if __name__ == '__main__':
