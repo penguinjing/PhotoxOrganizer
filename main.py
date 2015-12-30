@@ -15,6 +15,8 @@ import hashlib
 
 # 全局变量
 #PATH = "/path/2/work dir"
+MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 
 # 函式撰写区
 def print_prompt():
@@ -56,7 +58,10 @@ def create_target_dir(TargetDir, ShotDate):
         targetDirJoin = os.path.join(TargetDir, ShotDate)
     else:    
         year, month, day = ShotDate
-        targetDirJoin = os.path.join(TargetDir, year, month, day)
+        LF_year = ''.join(['Year', year]).encode('ascii','ignore')
+        LF_month = ''.join([month, '-', MONTH_NAMES[int(month)-1]]).encode('ascii','ignore')
+        LF_day = ''.join(['Day-', day]).encode('ascii','ignore')
+        targetDirJoin = os.path.join(TargetDir, LF_year, LF_month, LF_day)
     if os.path.exists(targetDirJoin):
         return
     else:
@@ -74,24 +79,27 @@ def hash_file(file):
 
 def copy_image_file(FullFileName, TargetDir, ShotDate):
     if ShotDate == 'unknown':
-        newFileName = os.path.basename(FullFileName)
-        targetFullFileName = os.path.join(TargetDir, ShotDate, newFileName)
+        newBasename = os.path.basename(FullFileName)
+        targetFullFileName = os.path.join(TargetDir, ShotDate, newBasename)
     else: 
         year, month, day = ShotDate
-        newFileName = ''.join([year, month, day, '_', os.path.basename(FullFileName)])
-        targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
+        LF_year = ''.join(['Year', year])
+        LF_month = ''.join([month, '-', MONTH_NAMES[int(month)-1]])
+        LF_day = ''.join(['Day-', day])
+        newBasename = ''.join([year, month, day, '_', os.path.basename(FullFileName)])
+        targetFullFileName = os.path.join(TargetDir, LF_year, LF_month, LF_day, newBasename)
 
-    if os.path.isfile(targetFullFileName) and hash_file(FullFileName) != hash_file(targetFullFileName):
-        print "\ntarget file <{}> existed.".format(os.path.basename(targetFullFileName)) ,
-        oldfilename, extname = os.path.splitext(targetFullFileName)
-        for n in range(1, 100):
-            targetFullFileName = ''.join([oldfilename, '_', str(n), extname])
-            if not os.path.isfile(targetFullFileName):
-                print "\na new file <{}> will be created.".format(os.path.basename(targetFullFileName)) ,
-                break
-    else: 
-        print "\ntarget file: <{}> existed & passed.".format(os.path.basename(targetFullFileName)) ,
-        return
+    if os.path.isfile(targetFullFileName):
+        if hash_file(FullFileName) != hash_file(targetFullFileName):
+            oldfilename, extname = os.path.splitext(targetFullFileName)
+            for n in range(1, 100):
+                targetFullFileName = ''.join([oldfilename, '_', str(n), extname])
+                if not os.path.isfile(targetFullFileName):
+                    print "\na new file <{}> will be created.".format(os.path.basename(targetFullFileName)) ,
+                    break
+        else: 
+            print "\ntarget file: <{}> existed & passed.".format(os.path.basename(targetFullFileName)) ,
+            return
     shutil.copy2(FullFileName, targetFullFileName)
 
 # 自检区
