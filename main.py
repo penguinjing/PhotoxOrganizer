@@ -11,6 +11,7 @@ import os
 import exifread
 import shutil
 from sys import argv
+import hashlib
 
 # 全局变量
 #PATH = "/path/2/work dir"
@@ -61,27 +62,50 @@ def create_target_dir(TargetDir, ShotDate):
     else:
         os.makedirs(targetDirJoin)
 
+def hash_file(file):
+    BLOCKSIZE = 65536
+    hasher = hashlib.md5()
+    with open(file, 'rb') as f:
+        buf = f.read(BLOCKSIZE)
+        while len(buf) > 0:
+            hasher.update(buf)
+            buf = f.read(BLOCKSIZE)
+    return hasher.digest()
+
 def copy_image_file(FullFileName, TargetDir, ShotDate):
     if ShotDate == 'unknown':
         newFileName = os.path.basename(FullFileName)
         targetFullFileName = os.path.join(TargetDir, ShotDate, newFileName)
     else: 
         year, month, day = ShotDate
-        newFileName = year + month + day + '_' + os.path.basename(FullFileName)
+        newFileName = ''.join([year, month, day, '_', os.path.basename(FullFileName)])
         targetFullFileName = os.path.join(TargetDir, year, month, day, newFileName)
+
+    if os.path.isfile(targetFullFileName) and hash_file(FullFileName) != hash_file(targetFullFileName):
+        print "\ntarget file <{}> existed.".format(os.path.basename(targetFullFileName)) ,
+        oldfilename, extname = os.path.splitext(targetFullFileName)
+        for n in range(1, 100):
+            targetFullFileName = ''.join([oldfilename, '_', str(n), extname])
+            if not os.path.isfile(targetFullFileName):
+                print "\na new file <{}> will be created.".format(os.path.basename(targetFullFileName)) ,
+                break
+    else: 
+        print "\ntarget file: <{}> existed & passed.".format(os.path.basename(targetFullFileName)) ,
+        return
     shutil.copy2(FullFileName, targetFullFileName)
 
 # 自检区
 if __name__ == '__main__':
     if len(argv) in [1, 2] or len(argv) > 3:
         print_prompt()
-    if len(argv) == 3:
+    elif len(argv) == 3:
         selfname, sourcedir, targetdir = argv
-        if os.path.exists(sourcedir) and os.path.exists(targetdir):
+        if os.path.isdir(sourcedir) and os.path.isdir(targetdir):
             for jpgfile in get_all_jpg(sourcedir):
-                print 'processing files' ,jpgfile 
+                print 'processing files', jpgfile,  
                 image_date = get_exif_date(jpgfile)
                 create_target_dir(targetdir, ShotDate = image_date)
                 copy_image_file(jpgfile, targetdir, ShotDate = image_date)
+                print '-> Done'
         else:
-            print_prompt
+            print_prompt()
