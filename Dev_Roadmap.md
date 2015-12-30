@@ -22,6 +22,10 @@
 - [x] 测试拍摄日期目录已建立的情况
 - [x] 测试如果在目标位置已有同名文件，弹出提示，由客户修改新文件名进行备份
 
+#### version 0.5 by penguin
+
+- [x] 测试中文图片文件名不通过，需要更改sys.setdefaultencoding编码功能
+
 ## Reference:
 
 #### 照片exif中读取拍摄日期

@@ -7,6 +7,19 @@
 ###### 三级目录结构示意
 
 ```
+temp_photos/
+├── IMG224924.jpg
+├── IMG134015.jpg
+├── IMG134031.jpg
+├── IMG211327.jpg
+├── Subfolders
+│   ├── Photo110.jpg
+│   ├── Photo119.jpg
+│   └── Photo120.jpg
+└── IMG211429.jpg
+```
+
+```
 -/...
 -/Year2010/...
 -/Year2011/...
@@ -29,8 +42,8 @@
 `$python main.py <original dir> <target dir>`
 
 > 参数目录说明  
-> `<orginal dir>` - 图片所在的源目录(包括其所在的子目录)  
-> `<target dir>`  - 图片汇总备份至目标目录
+> `<orginal dir>` - 待整理图片源目录(包括其所在的子目录) e.g. ../temp_photos
+> `<target dir>`  - 整理好的图片放置的目标目录 e.g. ../photobase
 
 
 ### 安装
