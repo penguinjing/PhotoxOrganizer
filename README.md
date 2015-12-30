@@ -43,9 +43,9 @@ organized_photobase/
 `$python main.py <original dir> <target dir>`
 
 > 参数目录说明  
-> `<orginal dir>` - 待整理图片源目录(包括其所在的子目录) e.g. ../temp_photos
-> `<target dir>`  - 放置整理好图片的目标目录 e.g. ../organized_photobase
-> 目录路径支持：相对目录路径、绝对目录路径
+> `<orginal dir>` - 待整理图片源目录(包括其所在的子目录) e.g. ../temp_photos  
+> `<target dir>`  - 放置整理好图片的目标目录 e.g. ../organized_photobase  
+> 目录路径支持：相对目录路径、绝对目录路径  
 
 
 ### 安装
